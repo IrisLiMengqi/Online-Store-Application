@@ -85,11 +85,16 @@ public class User implements UserDetails {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public boolean isEnabled() {
-		return enabled;
-	}
+	
 	public void setEnabled(boolean enable) {
 		this.enabled = enable;
+	}
+	
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
