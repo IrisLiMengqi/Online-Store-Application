@@ -22,7 +22,7 @@
 		<nav class="navbar navbar-default navbar-inverse">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#">EasyBuy</a>
+					<a class="navbar-brand" th:href="@{/}">EasyBuy</a>
 				</div>
 				<div id="navbar">
 					<ul class="nav navbar-nav navbar-left">
@@ -31,7 +31,7 @@
 							data-toggle="dropdown" role="button" aria-haspopup="true"
 							aria-expanded="false">Books<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Browse</a></li>
+								<li><a th:href="@{/bookshelf}">Browse</a></li>
 								<li><a href="#">Customer Service</a></li>
 							</ul></li>
 						<li>
@@ -46,8 +46,11 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">SHOPPING CART</a></li>
+						<!-- <li><a sec:authorize="isAnonymous()" th:href="@{/login}">MY ACCOUNT</a></li>
+						<li><a th:href="@{/login}">MY ACCOUNT</a></li>
+						<li><a th:if="${isLoggedIn}" href="@{/logout}">LOGOUT</a></li> -->
 						<li><a sec:authorize="isAnonymous()" th:href="@{/login}">MY ACCOUNT</a></li>
-						<li><a sec:authorize="isAuthenticated()" th:href="@{/login}">MY ACCOUNT</a></li>
+						<li><a sec:authorize="isAuthenticated()" th:href="@{/myProfile}">MY ACCOUNT</a></li>
 						<li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">LOGOUT</a></li>
 
 					</ul>

@@ -43,11 +43,23 @@
 								</div>
 
 								<div class="form-group">
-									<label for="email">* Email Address: </label> <input
+									<label for="email">* Email Address: </label>&nbsp;<span
+												style="color: red;" th:if="${usernameExists}">Username
+												already exists. Choose a differesnt one.</span><input
 										required="required" type="text" class="form-control"
 										id="email" name="email" />
 									<p style="color: #828282">A valid email address.</p>
 								</div>
+								
+								<!-- type of user -->
+							<!-- 	<div class="form-group">
+									<label class="col-md-2 control-label" for="status">Status</label>
+									<div class="col-md-8">
+										<label><input value="true" type="radio" name="isCustomer"
+											checked="checked" /> Customer </label> <label><input
+											value="false" type="radio" name="isCustomer" /> Seller</label>
+									</div>
+								</div> -->
 
 								<button type="submit" class="btn btn-primary">Create
 									new account</button>

@@ -4,6 +4,7 @@ package edu.neu.cs5200.onlineStore.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,7 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/",
 			"/newUser",
 			"/login",
-			"/fonts/**"
+			"/fonts/**",
+			"/bookshelf",
+			"/bookDetail"
+			
 			
 	};
 	
@@ -48,10 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		/*	antMatchers("/**").*/
 			antMatchers(PUBLIC_MATCHERS).
 			permitAll().anyRequest().authenticated();
-		
+		//.defaultSuccessUrl("/")
 		http
+			
 			.csrf().disable().cors().disable()
-			.formLogin().failureUrl("/login?error").defaultSuccessUrl("/")
+			.formLogin().failureUrl("/login?error")
 			.loginPage("/login").permitAll()
 			.and()
 			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

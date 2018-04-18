@@ -33,6 +33,7 @@ public class User implements UserDetails {
 	private String password;
 	private String lastname;
 	private String firstname;
+
 	
 	@Column(name="email", nullable=false, updatable = false)
 	private String email;
@@ -43,6 +44,12 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
 	
+//	public boolean isCustomer() {
+//		return isCustomer;
+//	}
+//	public void setCustomer(boolean isCustomer) {
+//		this.isCustomer = isCustomer;
+//	}
 	public int getId() {
 		return id;
 	}
