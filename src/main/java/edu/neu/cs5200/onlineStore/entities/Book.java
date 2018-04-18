@@ -2,11 +2,16 @@ package edu.neu.cs5200.onlineStore.entities;
 
 
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Book {
@@ -20,9 +25,23 @@ public class Book {
 	
 	@Column(columnDefinition="text")
 	private String description;
+	
+	@OneToMany(mappedBy="book")
+	@JsonIgnore
+	private List<BookToCartItem> bookToCartItems; 
 
 	
 	
+	
+	
+	public List<BookToCartItem> getBookToCartItems() {
+		return bookToCartItems;
+	}
+
+	public void setBookToCartItems(List<BookToCartItem> bookToCartItems) {
+		this.bookToCartItems = bookToCartItems;
+	}
+
 	public String getImage() {
 		return image;
 	}
