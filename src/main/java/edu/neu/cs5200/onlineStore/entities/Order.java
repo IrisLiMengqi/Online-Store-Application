@@ -1,7 +1,7 @@
 package edu.neu.cs5200.onlineStore.entities;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,12 +23,24 @@ public class Order {
 	private Date orderDate;
 	private String orderStatus;
 	private BigDecimal orderTotal;
+	private String shippingMethod;
 	
 	@OneToMany(mappedBy="order", cascade=CascadeType.ALL)
 	private List<CartItem> cartItemList;
 	
 	@ManyToOne
 	private User user;
+
+	
+	
+	
+	public String getShippingMethod() {
+		return shippingMethod;
+	}
+
+	public void setShippingMethod(String shippingMethod) {
+		this.shippingMethod = shippingMethod;
+	}
 
 	public Long getId() {
 		return id;
@@ -42,8 +54,8 @@ public class Order {
 		return orderDate;
 	}
 
-	public void setOrderDate(Date orderDate) {
-		this.orderDate = orderDate;
+	public void setOrderDate(Date date) {
+		this.orderDate = date;
 	}
 
 	public String getOrderStatus() {

@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import edu.neu.cs5200.onlineStore.entities.ShoppingCart;
 import edu.neu.cs5200.onlineStore.entities.User;
 import edu.neu.cs5200.onlineStore.repositories.PasswordResetTokenRepository;
 import edu.neu.cs5200.onlineStore.repositories.RoleRepository;
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public User createUser(User user, Set<UserRole> userRoles) {
 		User localUser = userRepository.findByUsername(user.getUsername());
 		
@@ -65,10 +68,27 @@ public class UserServiceImpl implements UserService {
 			
 			user.getUserRoles().addAll(userRoles);
 			
+			//shopping cart for each user
+			ShoppingCart shoppingCart = new ShoppingCart();
+			shoppingCart.setUser(user);
+			user.setShoppingCart(shoppingCart);
+			
+			
+			
 			localUser = userRepository.save(user);
 		}
 		
 		return localUser;
+	}
+
+	@Override
+	public User save(User currentUser) {
+		return userRepository.save(currentUser);
+	}
+
+	@Override
+	public User findById(Long id) {
+		return userRepository.findOne(id);
 	}
 	
 	

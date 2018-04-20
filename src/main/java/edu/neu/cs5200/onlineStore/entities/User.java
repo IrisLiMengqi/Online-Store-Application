@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id", nullable=false, updatable = false)
-	private int id;
+	private Long id;
 	private String username;
 	private String password;
 	private String lastname;
@@ -44,18 +45,32 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
 	
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="user")
+	private ShoppingCart shoppingCart;
+	
 //	public boolean isCustomer() {
 //		return isCustomer;
 //	}
 //	public void setCustomer(boolean isCustomer) {
 //		this.isCustomer = isCustomer;
 //	}
-	public int getId() {
+	
+
+	
+	
+	public ShoppingCart getShoppingCart() {
+		return shoppingCart;
+	}
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
+	public void setShoppingCart(ShoppingCart shoppingCart) {
+		this.shoppingCart = shoppingCart;
+	}
+
 	public String getUsername() {
 		return username;
 	}
