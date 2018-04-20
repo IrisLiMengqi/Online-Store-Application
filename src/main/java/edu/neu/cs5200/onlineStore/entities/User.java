@@ -3,6 +3,7 @@ package edu.neu.cs5200.onlineStore.entities;
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,6 +42,9 @@ public class User implements UserDetails {
 	private String phone;
 	private boolean enabled=true;
 	
+	@OneToMany(mappedBy="user")
+	private List<Order> orderList;
+	
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
@@ -55,11 +59,17 @@ public class User implements UserDetails {
 //		this.isCustomer = isCustomer;
 //	}
 	
-
+	
 	
 	
 	public ShoppingCart getShoppingCart() {
 		return shoppingCart;
+	}
+	public List<Order> getOrderList() {
+		return orderList;
+	}
+	public void setOrderList(List<Order> orderList) {
+		this.orderList = orderList;
 	}
 	public Long getId() {
 		return id;

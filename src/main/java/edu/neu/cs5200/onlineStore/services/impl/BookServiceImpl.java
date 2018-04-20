@@ -1,5 +1,6 @@
 package edu.neu.cs5200.onlineStore.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,19 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public Book findOne(Long id) {
 		return bookRepository.findOne(id);
+	}
+
+	@Override
+	public List<Book> blurrySearch(String title) {
+		List<Book> bookList = bookRepository.findByTitleContaining(title);
+		List<Book> activeList = new ArrayList<>();
+		
+		for (Book book : bookList) {
+//			if (book.isActive()) {
+				activeList.add(book);
+//			}
+		}
+		return activeList;
 	}
 
 }

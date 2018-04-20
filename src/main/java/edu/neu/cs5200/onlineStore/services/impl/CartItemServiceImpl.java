@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import edu.neu.cs5200.onlineStore.entities.Book;
 import edu.neu.cs5200.onlineStore.entities.BookToCartItem;
 import edu.neu.cs5200.onlineStore.entities.CartItem;
+import edu.neu.cs5200.onlineStore.entities.Order;
 import edu.neu.cs5200.onlineStore.entities.ShoppingCart;
 import edu.neu.cs5200.onlineStore.entities.User;
 import edu.neu.cs5200.onlineStore.repositories.BookToCartItemRepository;
@@ -86,6 +87,11 @@ public class CartItemServiceImpl implements CartItemService{
 	@Override
 	public CartItem save(CartItem cartItem) {
 		return cartItemRepository.save(cartItem);
+	}
+
+	@Override
+	public List<CartItem> findByOrder(Order order) {
+		return cartItemRepository.findByOrder(order);
 	}
 	
 }

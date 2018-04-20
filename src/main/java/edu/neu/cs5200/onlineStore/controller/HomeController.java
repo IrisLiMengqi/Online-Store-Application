@@ -27,11 +27,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.neu.cs5200.onlineStore.entities.Book;
+import edu.neu.cs5200.onlineStore.entities.CartItem;
+import edu.neu.cs5200.onlineStore.entities.Order;
 import edu.neu.cs5200.onlineStore.entities.User;
 import edu.neu.cs5200.onlineStore.security.PasswordResetToken;
 import edu.neu.cs5200.onlineStore.security.Role;
 import edu.neu.cs5200.onlineStore.security.UserRole;
 import edu.neu.cs5200.onlineStore.services.BookService;
+import edu.neu.cs5200.onlineStore.services.CartItemService;
+import edu.neu.cs5200.onlineStore.services.OrderService;
 import edu.neu.cs5200.onlineStore.services.UserService;
 import edu.neu.cs5200.onlineStore.services.impl.UserSecurityService;
 import edu.neu.cs5200.onlineStore.utility.MailConstructor;
@@ -54,7 +58,12 @@ public class HomeController {
 
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private OrderService orderService;
 
+	@Autowired
+	private CartItemService cartItemService;
 	// default index page and customer page
 	// @RequestMapping("/")
 	// public String index(
@@ -144,6 +153,7 @@ public class HomeController {
 	public String myProfile(Model model, Principal principal) {
 		User user = userService.findByUsername(principal.getName());
 		model.addAttribute("user", user);
+		model.addAttribute("orderList", user.getOrderList());
 		// model.addAttribute("orderList",user.getOrderList());
 
 		model.addAttribute("classActiveEdit", true);
@@ -158,6 +168,7 @@ public class HomeController {
 		model.addAttribute("classActiveNewAccount", true);
 		model.addAttribute("email", userEmail);
 		model.addAttribute("username", username);
+		
 
 		if (userService.findByUsername(username) != null) {
 			model.addAttribute("usernameExists", true);
@@ -198,6 +209,7 @@ public class HomeController {
 		mailSender.send(email);
 
 		model.addAttribute("emailSent", "true");
+		model.addAttribute("orderList", user.getOrderList());
 
 		return "myAccount";
 	}
@@ -225,6 +237,8 @@ public class HomeController {
 		model.addAttribute("user", user);
 
 		model.addAttribute("classActiveEdit", true);
+		model.addAttribute("orderList", user.getOrderList());
+		
 		return "myProfile";
 	}
 
@@ -284,9 +298,62 @@ public class HomeController {
 				userDetails.getAuthorities());
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+		model.addAttribute("orderList", user.getOrderList());
 
 		return "myProfile";
 
 	}
+	
+	@RequestMapping("/orderDetail")
+	public String orderDetail(
+			@RequestParam("id") Long orderId,
+			Model model,
+			Principal principal
+			) {
+		
+		User user = userService.findByUsername(principal.getName());
+		Order order = orderService.findOne(orderId);
+		
+		if (order.getUser().getId() != user.getId()) {
+			return "badRequestPage";
+		} else {
+			List<CartItem> cartItemList = cartItemService.findByOrder(order);
+			model.addAttribute("cartItemList", cartItemList);
+			model.addAttribute("user", user);
+			model.addAttribute("order", order);
+			model.addAttribute("orderList", user.getOrderList());
+			model.addAttribute("classActiveOrders", true);
+			model.addAttribute("displayOrderDetail", true);
+			
+			return "myProfile";
+		}
+		
+		
+		
+	}
+	
+	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

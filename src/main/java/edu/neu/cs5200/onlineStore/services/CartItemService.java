@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.neu.cs5200.onlineStore.entities.Book;
 import edu.neu.cs5200.onlineStore.entities.CartItem;
+import edu.neu.cs5200.onlineStore.entities.Order;
 import edu.neu.cs5200.onlineStore.entities.ShoppingCart;
 import edu.neu.cs5200.onlineStore.entities.User;
 
@@ -20,4 +21,6 @@ public interface CartItemService {
 	void removeCartItem(CartItem cartItem);
 
 	CartItem save(CartItem cartItem);
+
+	List<CartItem> findByOrder(Order order);
 }
