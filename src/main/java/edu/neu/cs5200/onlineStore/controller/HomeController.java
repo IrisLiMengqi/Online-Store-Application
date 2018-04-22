@@ -1,5 +1,7 @@
 package edu.neu.cs5200.onlineStore.controller;
 
+import static org.mockito.Matchers.isNull;
+
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.neu.cs5200.onlineStore.entities.Book;
 import edu.neu.cs5200.onlineStore.entities.CartItem;
+import edu.neu.cs5200.onlineStore.entities.Message;
 import edu.neu.cs5200.onlineStore.entities.Order;
 import edu.neu.cs5200.onlineStore.entities.User;
 import edu.neu.cs5200.onlineStore.security.PasswordResetToken;
@@ -35,6 +39,7 @@ import edu.neu.cs5200.onlineStore.security.Role;
 import edu.neu.cs5200.onlineStore.security.UserRole;
 import edu.neu.cs5200.onlineStore.services.BookService;
 import edu.neu.cs5200.onlineStore.services.CartItemService;
+import edu.neu.cs5200.onlineStore.services.MessageService;
 import edu.neu.cs5200.onlineStore.services.OrderService;
 import edu.neu.cs5200.onlineStore.services.UserService;
 import edu.neu.cs5200.onlineStore.services.impl.UserSecurityService;
@@ -64,6 +69,10 @@ public class HomeController {
 
 	@Autowired
 	private CartItemService cartItemService;
+	
+	@Autowired
+	private MessageService messageService;
+	
 	// default index page and customer page
 	// @RequestMapping("/")
 	// public String index(
@@ -91,6 +100,20 @@ public class HomeController {
 	// }
 	@RequestMapping("/")
 	public String index() {
+		return "redirect:/index";
+	}
+	
+	@RequestMapping("/index")
+	public String indexPage(Principal principal) {
+		if(principal == null) {
+			return "index";
+		}
+		
+		if (principal.getName().equals("service")) {
+			return "redirect:/adminportal/service";
+		} else if (principal.getName().equals("admin")) {
+			return "home";
+		}
 		return "index";
 	}
 
@@ -237,7 +260,7 @@ public class HomeController {
 		model.addAttribute("user", user);
 
 		model.addAttribute("classActiveEdit", true);
-		model.addAttribute("orderList", user.getOrderList());
+//		model.addAttribute("orderList", user.getOrderList());
 		
 		return "myProfile";
 	}
@@ -327,12 +350,35 @@ public class HomeController {
 			
 			return "myProfile";
 		}
+	}
+	
+	@RequestMapping("/customerService")
+	public String customerService() {
+		return "service";
+	}
+	
+	@RequestMapping(value="/customerService", method=RequestMethod.POST)
+	public String customerServicePost(
+			Principal principal,
+			Model model,
+			@ModelAttribute("subject") String subject,
+			@ModelAttribute("description") String description
+			) {
+		User user = userService.findByUsername(principal.getName());
+		Message message = new Message();
+		message.setSubject(subject);
+		message.setDescription(description);
+		message.setUser(user);
+		
+		messageService.save(message);
 		
 		
-		
+		return "service";
 	}
 	
 	
+	
+	//ADMIN HOME CONTROLLER
 
 }
 

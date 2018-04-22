@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/adminHeader :: common-header" />
+
+<body>
+	<div th:replace="common/adminHeader :: navbar" />
+
+	<div class="container">
+		<div class="table-responsive">
+			<table id="bookListTable"
+				class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Category</th>
+						<th>Our Price</th>
+						<th>Operation</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="book : ${bookList}">
+						<!-- <td><input hidden="hidden" name="id" th:value="${book.id}" /></td> -->
+						<td><a th:href="@{/book/bookInfo(id=${book.id})}"><span
+								th:text="${book.title}"></span></a></td>
+
+						<td th:text="${book.category}"></td>
+						<td th:text="${book.price}"></td>
+						<td>
+						<form th:action="@{/book/remove}" method="post">
+							<input hidden="hidden" name="id" th:value="${book.id}" />
+							
+							<button class="btn btn-danger btn-xs delete-book" type="submit" value="delete">Delete</button>
+						
+						</form>
+							
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+
+	<div th:replace="common/adminHeader :: body-bottom-scripts" />
+	
+	<script>
+		$(document).ready(function() {
+			$("#bookListTable").DataTable({
+				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
+				"ordering": false,
+				stateSave: true
+			});
+		});
+	</script>
+	
+	
+</body>
+</html>

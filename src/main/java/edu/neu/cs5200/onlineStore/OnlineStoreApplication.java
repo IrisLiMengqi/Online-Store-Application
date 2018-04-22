@@ -26,20 +26,53 @@ public class OnlineStoreApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		User user1 = new User();
-		user1.setFirstname("David");
-		user1.setLastname("Su");
-		user1.setUsername("Sugar");
-		user1.setPassword(SecurityUtility.passwordEncoder().encode("p"));
-		user1.setEmail("su.zho@husky.neu.edu");
+		
+		//initialize user
+		User user = new User();
+		user.setFirstname("David");
+		user.setLastname("Su");
+		user.setUsername("Sugar");
+		user.setPassword(SecurityUtility.passwordEncoder().encode("p"));
+		user.setEmail("su.zho@husky.neu.edu");
 //		user1.setCustomer(true);
 		Set<UserRole> userRoles = new HashSet<>();
-		Role role1 = new Role();
-		role1.setRoleId(1);
-		role1.setName("ROLE_USER");
-		userRoles.add(new UserRole(user1, role1));
+		Role role = new Role();
+		role.setRoleId(1);
+		role.setName("ROLE_USER");
+		userRoles.add(new UserRole(user, role));
 
-		userService.createUser(user1, userRoles);
+		userService.createUser(user, userRoles);
+		
+		//initialize seller
+		User user1 = new User();
+//		user1.setFirstname("David");
+//		user1.setLastname("Su");
+		user1.setUsername("admin");
+		user1.setPassword(SecurityUtility.passwordEncoder().encode("admin"));
+		user1.setEmail("admin@husky.neu.edu");
+		Set<UserRole> userRoles1 = new HashSet<>();
+		Role role1 = new Role();
+		role1.setRoleId(0); // 0 is admin, 1 is user
+		role1.setName("ROLE_ADMIN");
+		userRoles1.add(new UserRole(user1, role1));
+		userService.createUser(user1, userRoles1);
+	
+		//initialize customer service
+		User user2 = new User();
+//		user1.setFirstname("David");
+//		user1.setLastname("Su");
+		user2.setUsername("service");
+		user2.setPassword(SecurityUtility.passwordEncoder().encode("service"));
+		user2.setEmail("admin@husky.neu.edu");
+	
+		Role role2 = new Role();
+		role2.setRoleId(2); // 0 is admin, 1 is user
+		role2.setName("ROLE_SERVICE");
+		Set<UserRole> userRoles2 = new HashSet<>();
+		userRoles2.add(new UserRole(user2, role2));
+		
+		userService.createUser(user2, userRoles2);
+		
 	}
 
 }

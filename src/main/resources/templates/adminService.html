@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/serviceHeader :: common-header" />
+
+<body>
+	<div th:replace="common/serviceHeader :: navbar" />
+	<div class="tab-pane fade" id="tab-2"
+		th:classappend="${classActiveMessage}? 'in active'">
+		<div class="panel-group">
+			<div class="panel panel-default" style="border: none;">
+				<div class="panel-body"
+					style="background-color: #ededed; margin-top: 20px;">
+
+					<table class="table table-sm table-inverse">
+						<thead>
+							<tr>
+								<th>User</th>
+								<th>User Email</th>
+								<th>Subject</th>
+								<th>Description</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="message : ${messageList}">
+								<td><span th:text="${message.user.username}"></span></td>
+								<td><span th:text="${message.user.email}"></span></td>
+								<td data-th-text="${message.subject}"></td>
+								<td data-th-text="${message.description}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:replace="common/serviceHeader :: body-bottom-scripts" />
+</body>
+</html>
